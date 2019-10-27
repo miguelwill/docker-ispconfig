@@ -50,7 +50,7 @@ RUN echo "dash  dash/sh boolean no" | debconf-set-selections && dpkg-reconfigure
 RUN echo 'mysql-server mysql-server/root_password password pass' | debconf-set-selections \
 && echo 'mysql-server mysql-server/root_password_again password pass' | debconf-set-selections \
 && echo 'mariadb-server mariadb-server/root_password password pass' | debconf-set-selections \
-&& echo 'mariadb-server mariadb-server/root_password_again password pass' | debconf-set-selections
+&& echo 'mariadb-server mariadb-server/root_password_again password kl32j42l2kj34' | debconf-set-selections
 RUN apt-get -y install postfix postfix-mysql postfix-doc mariadb-client mariadb-server openssl getmail4 rkhunter binutils dovecot-imapd dovecot-pop3d dovecot-mysql dovecot-sieve dovecot-lmtpd sudo
 ADD ./etc/postfix/master.cf /etc/postfix/master.cf
 RUN mv /etc/mysql/mariadb.conf.d/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf.backup
@@ -78,7 +78,7 @@ RUN cd /opt/metronome && ./configure --ostype=debian --prefix=/usr && make && ma
 
 # --- 10 Install Apache2, PHP5, phpMyAdmin, FCGI, suExec, Pear, And mcrypt
 RUN echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections \
-&& echo 'phpmyadmin phpmyadmin/mysql/admin-pass password pass' | debconf-set-selections \
+&& echo 'phpmyadmin phpmyadmin/mysql/admin-pass password kl32j42l2kj34' | debconf-set-selections \
 && echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections
 RUN service mysql start && apt-get -y install apache2 apache2-doc apache2-utils libapache2-mod-php php7.0 php7.0-common php7.0-gd php7.0-mysql php7.0-imap phpmyadmin php7.0-cli php7.0-cgi libapache2-mod-fcgid apache2-suexec-pristine php-pear php7.0-mcrypt mcrypt  imagemagick libruby libapache2-mod-python php7.0-curl php7.0-intl php7.0-pspell php7.0-recode php7.0-sqlite3 php7.0-tidy php7.0-xmlrpc php7.0-xsl memcached php-memcache php-imagick php-gettext php7.0-zip php7.0-mbstring memcached libapache2-mod-passenger php7.0-soap
 RUN a2enmod suexec rewrite ssl actions include dav_fs dav auth_digest cgi
