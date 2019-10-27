@@ -28,7 +28,7 @@ docker run --name ispconfig \
 -p 143:143 \
 -p 993:993 \
 -p 995:995 \
-jerob/docker-ispconfig /start.sh
+miguelwill/docker-ispconfig /start.sh
 
 ISPConfig administration
 
@@ -42,7 +42,7 @@ SSH PORT : 2222 ( ssh -p 2222 user@host )
 
 Shell access
 
-docker exec -i -t jerob/docker-ispconfig bash
+docker exec -i -t miguelwill/docker-ispconfig bash
 
 Reconfigure ISPConfig
 
@@ -65,7 +65,7 @@ MariaDB password : pass
 It is strongly recommended that you change the MariaDB and ISPConfig password as soon as possible
 Issues
 
-If you have any issues or suggests, please do not hesitate to write a ticket on the project page https://github.com/jerob/docker-ispconfig/issues
+If you have any issues or suggests, please do not hesitate to write a ticket on the project page https://github.com/miguelwill/docker-ispconfig/issues
 Backup exemple with S3
 
 docker run --volumes-from ispconfig \
@@ -82,7 +82,7 @@ docker run --volumes-from ispconfig \
 -e PARAMS_CLEAN='remove-older-than 3M \
 --force --extra-clean' \
 -e DEST='s3://xxxxx.amazonaws.com/bucket-name/' \
-jerob/docker-duplicity bash /duplicity
+miguelwill/docker-duplicity bash /duplicity
 
 ISPConfig Beta
 
@@ -106,4 +106,4 @@ docker run --name ispconfig \
 -p 8080:8080 \
 -p 53:53 \
 -p 2222:22 \
-jerob/docker-ispconfig:beta /start.sh
+miguelwill/docker-ispconfig:beta /start.sh
