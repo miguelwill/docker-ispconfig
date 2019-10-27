@@ -60,29 +60,12 @@ http://your-ip/phpmyadmin
 
 MariaDB login : root
 
-MariaDB password : pass
+MariaDB password : kl32j42l2kj34
 
 It is strongly recommended that you change the MariaDB and ISPConfig password as soon as possible
 Issues
 
 If you have any issues or suggests, please do not hesitate to write a ticket on the project page https://github.com/miguelwill/docker-ispconfig/issues
-Backup exemple with S3
-
-docker run --volumes-from ispconfig \
--e PASSPHRASE=pass \
--e AWS_ACCESS_KEY_ID=xxxxx \
--e AWS_SECRET_ACCESS_KEY=xxxxx \
--e PARAMS='--allow-source-mismatch \
---full-if-older-than 1W \
---include /var/mail/ \
---include /var/www/ \
---include /var/backup/sql/ \
---include /etc/' \
--e SRC='/' \
--e PARAMS_CLEAN='remove-older-than 3M \
---force --extra-clean' \
--e DEST='s3://xxxxx.amazonaws.com/bucket-name/' \
-miguelwill/docker-duplicity bash /duplicity
 
 ISPConfig Beta
 

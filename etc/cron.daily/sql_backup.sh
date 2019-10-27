@@ -2,7 +2,7 @@
 if [ $SQL_BACKUP = 1 ]
 then
 MUSER=root
-MPASS=pass
+MPASS=kl32j42l2kj34
 BACKUP=/var/backup/sql
 NOW="$(date +"%d-%m-%Y_%H%M")"
 OLD="$(date +"%d-%m-%Y" -d '-7 day')"
