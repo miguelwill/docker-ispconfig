@@ -15,7 +15,7 @@
 #
 # Dockerfile for ISPConfig with MariaDB database
 #
-# https://www.howtoforge.com/tutorial/perfect-server-debian-8-jessie-apache-bind-dovecot-ispconfig-3/
+# http://www.howtoforge.com/perfect-server-debian-10-buster-apache-bind-dovecot-ispconfig-3-1//
 #
 
 FROM debian:buster-slim
@@ -64,12 +64,12 @@ RUN mkdir -p /etc/systemd/system/mysql.service.d/
 ADD ./etc/systemd/system/mysql.service.d/limits.conf /etc/systemd/system/mysql.service.d/limits.conf
 
 # --- 9 Install Amavisd-new, SpamAssassin And Clamav
-RUN apt-get -y install amavisd-new spamassassin clamav clamav-daemon zoo unzip bzip2 arj nomarch lzop cabextract apt-listchanges libnet-ldap-perl libauthen-sasl-perl clamav-docs daemon libio-string-perl libio-socket-ssl-perl libnet-ident-perl zip libnet-dns-perl
+RUN apt-get -y install amavisd-new spamassassin clamav clamav-daemon unzip bzip2 arj nomarch lzop cabextract apt-listchanges libnet-ldap-perl libauthen-sasl-perl clamav-docs daemon libio-string-perl libio-socket-ssl-perl libnet-ident-perl zip libnet-dns-perl
 ADD ./etc/clamav/clamd.conf /etc/clamav/clamd.conf
 RUN service spamassassin stop && systemctl disable spamassassin
 
 # --- 9.1 Install Metronome XMPP Server
-RUN echo "deb http://packages.prosody.im/debian jessie main" > /etc/apt/sources.list.d/metronome.list
+RUN echo "deb http://packages.prosody.im/debian buster main" > /etc/apt/sources.list.d/metronome.list
 RUN wget http://prosody.im/files/prosody-debian-packages.key -O - | apt-key add -
 RUN apt-get -qq update && apt-get -y -qq install git lua5.1 liblua5.1-0-dev lua-filesystem libidn11-dev libssl-dev lua-zlib lua-expat lua-event lua-bitop lua-socket lua-sec luarocks luarocks
 RUN luarocks install lpc
