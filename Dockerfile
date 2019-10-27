@@ -18,7 +18,7 @@
 # https://www.howtoforge.com/tutorial/perfect-server-debian-8-jessie-apache-bind-dovecot-ispconfig-3/
 #
 
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 MAINTAINER Jeremie Robert <appydo@gmail.com> version: 0.2
 
@@ -80,14 +80,14 @@ RUN cd /opt/metronome && ./configure --ostype=debian --prefix=/usr && make && ma
 RUN echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections \
 && echo 'phpmyadmin phpmyadmin/mysql/admin-pass password kl32j42l2kj34' | debconf-set-selections \
 && echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections
-RUN service mysql start && apt-get -y install apache2 apache2-doc apache2-utils libapache2-mod-php php7.0 php7.0-common php7.0-gd php7.0-mysql php7.0-imap phpmyadmin php7.0-cli php7.0-cgi libapache2-mod-fcgid apache2-suexec-pristine php-pear php7.0-mcrypt mcrypt  imagemagick libruby libapache2-mod-python php7.0-curl php7.0-intl php7.0-pspell php7.0-recode php7.0-sqlite3 php7.0-tidy php7.0-xmlrpc php7.0-xsl memcached php-memcache php-imagick php-gettext php7.0-zip php7.0-mbstring memcached libapache2-mod-passenger php7.0-soap
-RUN a2enmod suexec rewrite ssl actions include dav_fs dav auth_digest cgi
+RUN service mysql start && apt-get -y install apache2 apache2-doc apache2-utils libapache2-mod-php php7.3 php7.3-common php7.3-gd php7.3-mysql php7.3-imap php7.3-cli php7.3-cgi libapache2-mod-fcgid apache2-suexec-pristine php-pear mcrypt  imagemagick libruby libapache2-mod-python php7.3-curl php7.3-intl php7.3-pspell php7.3-recode php7.3-sqlite3 php7.3-tidy php7.3-xmlrpc php7.3-xsl memcached php-memcache php-imagick php-gettext php7.3-zip php7.3-mbstring memcached libapache2-mod-passenger php7.3-soap php7.3-fpm php7.3-opcache php-apcu
+RUN a2enmod suexec rewrite ssl actions include dav_fs dav auth_digest cgi headers actions proxy_fcgi alias
 
 # --- 11 Install Let's Encrypt
 RUN apt-get -y install certbot
 
 # --- 12 Opcode and PHP-FPM
-RUN apt-get -y install php7.0-fpm php7.0-opcache php-apcu
+#RUN apt-get -y install php7.3-fpm php7.3-opcache php-apcu
 RUN a2enmod actions proxy_fcgi alias
 # php5 fpm (non-free)
 # RUN apt-get -y install libapache2-mod-fastcgi php5-fpm
@@ -123,30 +123,7 @@ RUN apt-mark hold pure-ftpd-common pure-ftpd-mysql
 # setup ftpgroup and ftpuser
 RUN groupadd ftpgroup && useradd -g ftpgroup -d /dev/null -s /etc ftpuser
 RUN apt-get -qq update && apt-get -y -qq install quota quotatool
-#RUN /bin/bash -c 'sed -i "s/{{ SSLCERT_ORGANIZATION }}/${SSLCERT_ORGANIZATION}/g;s/{{ SSLCERT_UNITNAME }}/${SSLCERT_UNITNAME}/g;s/{{ SSLCERT_EMAIL }}/${SSLCERT_EMAIL}/g;s/{{ SSLCERT_LOCALITY }}/${SSLCERT_LOCALITY}/g;s/{{ SSLCERT_STATE }}/${SSLCERT_STATE}/g;s/{{ SSLCERT_COUNTRY }}/${SSLCERT_COUNTRY}/g;s/{{ SSLCERT_CN }}/${FQDN}/g" /root/config/openssl.cnf'
-#RUN openssl req -x509 -nodes -days 7300 -newkey rsa:4096 -config /root/config/openssl.cnf -keyout /etc/ssl/private/pure-ftpd.pem -out /etc/ssl/private/pure-ftpd.pem
-#RUN chmod 600 /etc/ssl/private/pure-ftpd.pem
 
-# install package building helpers
-# RUN apt-get -y --force-yes install dpkg-dev debhelper openbsd-inetd
-# install dependancies
-# RUN apt-get -y build-dep pure-ftpd
-# build from source
-# RUN mkdir /tmp/pure-ftpd-mysql/ && \
-#    cd /tmp/pure-ftpd-mysql/ && \
-#    apt-get source pure-ftpd-mysql && \
-#    cd pure-ftpd-* && \
-#    sed -i '/^optflags=/ s/$/ --without-capabilities/g' ./debian/rules && \
-#    dpkg-buildpackage -b -uc
-# install the new deb files
-# RUN dpkg -i /tmp/pure-ftpd-mysql/pure-ftpd-common*.deb
-# RUN dpkg -i /tmp/pure-ftpd-mysql/pure-ftpd-mysql*.deb
-# Prevent pure-ftpd upgrading
-# RUN apt-mark hold pure-ftpd-common pure-ftpd-mysql
-# setup ftpgroup and ftpuser
-# RUN groupadd ftpgroup
-# RUN useradd -g ftpgroup -d /dev/null -s /etc ftpuser
-# RUN apt-get -y install quota quotatool
 ADD ./etc/default/pure-ftpd-common /etc/default/pure-ftpd-common
 RUN echo 1 > /etc/pure-ftpd/conf/TLS && mkdir -p /etc/ssl/private/
 # RUN openssl req -x509 -nodes -days 7300 -newkey rsa:2048 -keyout /etc/ssl/private/pure-ftpd.pem -out /etc/ssl/private/pure-ftpd.pem
@@ -199,7 +176,7 @@ ADD ./etc/clamav/clamd.conf /etc/clamav/clamd.conf
 
 RUN echo "export TERM=xterm" >> /root/.bashrc
 
-EXPOSE 20/tcp 21/tcp 22/tcp 53 80/tcp 443/tcp 953/tcp 8080/tcp 30000 30001 30002 30003 30004 30005 30006 30007 30008 30009 3306
+EXPOSE 20/tcp 21/tcp 22/tcp 53 80/tcp 443/tcp 953/tcp 8080/tcp 143/tcp 993/tcp 110/tcp 995/tcp 30000 30001 30002 30003 30004 30005 30006 30007 30008 30009 3306
 
 # ISPCONFIG Initialization and Startup Script
 ADD ./start.sh /start.sh
