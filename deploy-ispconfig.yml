@@ -43,4 +43,3 @@ volumes:
   ispconfig_backup:
   ispconfig_usr:
   ispconfig_etc:
-  ispconfig_install:
