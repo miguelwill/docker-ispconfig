@@ -1,0 +1,46 @@
+version: '3'
+services:
+  ispconfig:
+    container_name: ispconfig
+    hostname: YOUR.DOMAIN.COM
+    restart: unless-stopped
+    image: miguelwill/docker-ispconfig
+    volumes:
+      - ispconfig_www:/var/www/
+      - ispconfig_mail:/var/mail/
+      - ispconfig_backup:/var/backup/
+      - ispconfig_mysql:/var/lib/mysql/
+      - ispconfig_log:/var/log/
+      - ispconfig_usr:/usr/local/
+      - ispconfig_etc:/etc/
+      - ispconfig_install:/usr/local/ispconfig/
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - MAILMAN_EMAIL_HOST=YOURMAIL.DOMAIN.COM
+      - MAILMAN_EMAIL=TEST@YOURMAIL.DOMAIN.COM
+      - MAILMAN_PASS=pass
+    network_mode: bridge
+    ports:
+      - "20:20"
+      - "21:21"
+      - "30000-30009:30000-30009"
+      - "25:25"
+      - "80:80"
+      - "444:443"
+      - "8080:8080"
+      - "53:53"
+      - "22:22"
+      - "110:110"
+      - "143:143"
+      - "993:993"
+      - "995:995"
+volumes:
+  ispconfig_www:
+  ispconfig_mail:
+  ispconfig_mysql:
+  ispconfig_log:
+  ispconfig_backup:
+  ispconfig_usr:
+  ispconfig_etc:
+  ispconfig_install:

@@ -77,7 +77,7 @@ RUN adduser --no-create-home --disabled-login --gecos 'Metronome' metronome
 RUN cd /opt && git clone https://github.com/maranda/metronome.git metronome
 RUN cd /opt/metronome && ./configure --ostype=debian --prefix=/usr && make && make install
 
-# --- 10 Install Apache2, PHP5, phpMyAdmin, FCGI, suExec, Pear, And mcrypt
+# --- 10 Install Apache2, PHP7.3, phpMyAdmin, FCGI, suExec, Pear, And mcrypt
 RUN echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections \
 && echo 'phpmyadmin phpmyadmin/mysql/admin-pass password kl32j42l2kj34' | debconf-set-selections \
 && echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections
@@ -166,10 +166,10 @@ ADD ./etc/apache2/conf-enabled/roundcube.conf /etc/apache2/conf-enabled/roundcub
 ADD ./etc/roundcube/config.inc.php /etc/roundcube/config.inc.php
 
 # --- 20 Install ISPConfig 3
-RUN cd /root && wget http://www.ispconfig.org/downloads/ISPConfig-3-stable.tar.gz && tar xfz ISPConfig-3-stable.tar.gz
+RUN cd /root && wget http://www.ispconfig.org/downloads/ISPConfig-3-stable.tar.gz ; tar xfz ISPConfig-3-stable.tar.gz
 # RUN ["/bin/bash", "-c", "cat /tmp/install_ispconfig.txt | php -q /tmp/ispconfig3_install/install/install.php"]
 # RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
-# RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php5/fpm/php.ini
+RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php/7.3/fpm/php.ini
 # RUN sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 100M/g" /etc/php5/fpm/php.ini
 
 # ADD ./etc/mysql/my.cnf /etc/mysql/my.cnf
@@ -177,7 +177,7 @@ ADD ./etc/clamav/clamd.conf /etc/clamav/clamd.conf
 
 RUN echo "export TERM=xterm" >> /root/.bashrc
 
-EXPOSE 20/tcp 21/tcp 22/tcp 53 80/tcp 443/tcp 953/tcp 8080/tcp 143/tcp 993/tcp 110/tcp 995/tcp 30000 30001 30002 30003 30004 30005 30006 30007 30008 30009 3306
+EXPOSE 20/tcp 21/tcp 22/tcp 53 25/tcp 80/tcp 443/tcp 953/tcp 8080/tcp 143/tcp 993/tcp 110/tcp 995/tcp 30000 30001 30002 30003 30004 30005 30006 30007 30008 30009 3306
 
 # ISPCONFIG Initialization and Startup Script
 ADD ./start.sh /start.sh
@@ -195,6 +195,6 @@ RUN freshclam
 # CLEANING
 RUN apt-get autoremove -y && apt-get clean && rm -rf /tmp/*
 
-VOLUME ["/var/www/","/var/mail/","/var/backup/","/usr/local/ispconfig", "/var/lib/mysql","/var/log/"]
+VOLUME ["/var/www/","/var/mail/","/var/backup/","/usr/local/ispconfig/", "/var/lib/mysql/","/var/log/"]
 
 CMD ["/bin/bash", "/start.sh"]

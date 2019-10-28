@@ -16,6 +16,7 @@ docker run --name ispconfig \
 -v $(pwd)/mysql:/var/lib/mysql \
 -v $(pwd)/www:/var/www \
 -v $(pwd)/mail:/var/mail \
+-v $(pwd)/ispconfig:/usr/local/ispconfig \
 -p 20:20 \
 -p 21:21 \
 -p 30000-30009:30000-30009 \
@@ -81,6 +82,7 @@ docker run --name ispconfig \
 -v $(pwd)/mysql:/var/lib/mysql \
 -v $(pwd)/www:/var/www \
 -v $(pwd)/mail:/var/mail \
+-v $(pwd)/ispconfig:/usr/local/ispconfig \
 -p 20:20 \
 -p 21:21 \
 -p 30000-30009:30000-30009 \
@@ -89,4 +91,8 @@ docker run --name ispconfig \
 -p 8080:8080 \
 -p 53:53 \
 -p 2222:22 \
+-p 110:110 \
+-p 143:143 \
+-p 993:993 \
+-p 995:995 \
 miguelwill/docker-ispconfig:beta /start.sh
